@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RTI - Formulaire de montage trimestriel</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f0f2f5;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+    h1 {
+      color: #1a3a6b;
+      font-size: 1.6em;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 25px;
+      font-size: 0.95em;
+    }
+    .section-title {
+      background: #1a3a6b;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin: 25px 0 15px;
+      font-size: 1.05em;
+      font-weight: 600;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #444;
+      font-size: 0.9em;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #d0d5dd;
+      border-radius: 8px;
+      font-size: 0.95em;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #1a3a6b;
+      box-shadow: 0 0 0 3px rgba(26,58,107,0.1);
+    }
+    .row {
+      display: flex;
+      gap: 15px;
+    }
+    .row > * { flex: 1; }
+    .duration-input {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .duration-input input {
+      width: 100%;
+    }
+    .duration-input span {
+      font-weight: 600;
+      color: #666;
+      white-space: nowrap;
+    }
+    .btn-add {
+      background: #e8f0fe;
+      color: #1a3a6b;
+      border: 1.5px dashed #1a3a6b;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    .btn-add:hover {
+      background: #d0e0ff;
+    }
+    .btn-submit {
+      background: #1a3a6b;
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 1.05em;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 25px;
+      transition: background 0.2s;
+    }
+    .btn-submit:hover {
+      background: #0f2a52;
+    }
+    .btn-submit:disabled {
+      background: #999;
+      cursor: not-allowed;
+    }
+    .element-row {
+      background: #f8f9fb;
+      border: 1px solid #e0e4ea;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .btn-remove {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #fee;
+      color: #c00;
+      border: 1px solid #fcc;
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 0.8em;
+      font-weight: 600;
+    }
+    .btn-remove:hover { background: #fdd; }
+    .message {
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      text-align: center;
+      font-weight: 600;
+      display: none;
+    }
+    .message.success { background: #d4edda; color: #155724; display: block; }
+    .message.error { background: #f8d7da; color: #721c24; display: block; }
+    .hint {
+      font-size: 0.8em;
+      color: #888;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎬 RTI - Groupe ETI</h1>
+    <p class="subtitle">Formulaire de collecte des données de montage trimestriel</p>
+
+    <form id="montageForm">
+      <!-- Informations du monteur -->
+      <div class="section-title">👤 Informations du monteur</div>
+      <div class="row">
+        <div class="form-group">
+          <label for="Nom_du_monteur">Nom et prénom *</label>
+          <input type="text" id="Nom_du_monteur" name="Nom_du_monteur" required placeholder="Ex: Kouassi Jean">
+        </div>
+        <div class="form-group">
+          <label for="Trimestre">Trimestre *</label>
+          <select id="Trimestre" name="Trimestre" required>
+            <option value="">-- Sélectionner --</option>
+            <option value="T1">T1 (Janvier - Mars)</option>
+            <option value="T2">T2 (Avril - Juin)</option>
+            <option value="T3">T3 (Juillet - Septembre)</option>
+            <option value="T4">T4 (Octobre - Décembre)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="Annee">Année *</label>
+          <input type="number" id="Annee" name="Annee" required min="2020" max="2030" value="2026">
+        </div>
+      </div>
+
+      <!-- Éléments montés -->
+      <div class="section-title">📼 Éléments montés</div>
+      <p class="hint" style="margin-bottom:10px;">Ajoutez chaque élément monté avec son titre et sa durée.</p>
+      
+      <div id="elementsContainer">
+        <!-- Les lignes d'éléments seront ajoutées ici dynamiquement -->
+      </div>
+      
+      <button type="button" class="btn-add" onclick="ajouterElement()">➕ Ajouter un élément monté</button>
+
+      <!-- Bouton de soumission -->
+      <button type="submit" class="btn-submit" id="btnSubmit">📤 Envoyer les données</button>
+    </form>
+
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    // ⚠️ REMPLACEZ PAR VOTRE URL D'APPLICATION WEB GOOGLE APPS SCRIPT
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztR7Tj_Ox2NbMmEGLFQEq38TMTJdbl2eTGRoEu0cxVoHovGb0KwCy4-DmnGp6W9w/exec';
+
+    let elementCount = 0;
+
+    // Ajouter une ligne d'élément monté
+    function ajouterElement() {
+      elementCount++;
+      const container = document.getElementById('elementsContainer');
+      const div = document.createElement('div');
+      div.className = 'element-row';
+      div.id = 'element-' + elementCount;
+      div.innerHTML = `
+        <button type="button" class="btn-remove" onclick="supprimerElement(${elementCount})">✕ Supprimer</button>
+        <div class="row">
+          <div class="form-group">
+            <label>Titre de l'élément *</label>
+            <input type="text" name="Titre_element[]" required placeholder="Ex: Journal télévisé 20h">
+          </div>
+          <div class="form-group">
+            <label>Durée *</label>
+            <div class="duration-input">
+              <input type="number" name="Duree_heures[]" min="0" max="99" placeholder="HH" value="0">
+              <span>h</span>
+              <input type="number" name="Duree_minutes[]" min="0" max="59" placeholder="MM" value="0">
+              <span>min</span>
+              <input type="number" name="Duree_secondes[]" min="0" max="59" placeholder="SS" value="0">
+              <span>s</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label>Type d'élément</label>
+            <select name="Type_element[]">
+              <option value="Reportage">Reportage</option>
+              <option value="Journal">Journal</option>
+              <option value="Magazine">Magazine</option>
+              <option value="Documentaire">Documentaire</option>
+              <option value="Spot publicitaire">Spot publicitaire</option>
+              <option value="Émission">Émission</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Observations</label>
+            <input type="text" name="Observations[]" placeholder="Remarques éventuelles">
+          </div>
+        </div>
+      `;
+      container.appendChild(div);
+    }
+
+    // Supprimer une ligne d'élément
+    function supprimerElement(id) {
+      const el = document.getElementById('element-' + id);
+      if (el) el.remove();
+    }
+
+    // Ajouter un premier élément au chargement
+    window.addEventListener('DOMContentLoaded', () => {
+      ajouterElement();
+    });
+
+    // Soumission du formulaire
+    document.getElementById('montageForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const btn = document.getElementById('btnSubmit');
+      const messageDiv = document.getElementById('message');
+      
+      btn.disabled = true;
+      btn.textContent = '⏳ Envoi en cours...';
+      messageDiv.className = 'message';
+      messageDiv.style.display = 'none';
+
+      try {
+        // Construire les données à envoyer
+        // On envoie une ligne par élément monté
+        const formData = new FormData(this);
+        const nomMonteur = formData.get('Nom_du_monteur');
+        const trimestre = formData.get('Trimestre');
+        const annee = formData.get('Annee');
+
+        const titres = formData.getAll('Titre_element[]');
+        const heures = formData.getAll('Duree_heures[]');
+        const minutes = formData.getAll('Duree_minutes[]');
+        const secondes = formData.getAll('Duree_secondes[]');
+        const types = formData.getAll('Type_element[]');
+        const observations = formData.getAll('Observations[]');
+
+        // Envoyer chaque élément comme une ligne séparée
+        const promises = titres.map((titre, index) => {
+          const duree = `${heures[index] || 0}h ${minutes[index] || 0}min ${secondes[index] || 0}s`;
+          
+          const params = new URLSearchParams();
+          params.append('Nom_du_monteur', nomMonteur);
+          params.append('Trimestre', trimestre);
+          params.append('Annee', annee);
+          params.append('Titre_element', titre);
+          params.append('Duree', duree);
+          params.append('Type_element', types[index] || '');
+          params.append('Observations', observations[index] || '');
+
+          return fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
+          });
+        });
+
+        await Promise.all(promises);
+
+        messageDiv.className = 'message success';
+        messageDiv.textContent = '✅ Données envoyées avec succès ! Elles ont été enregistrées dans le Google Sheet.';
+        
+        // Réinitialiser le formulaire
+        this.reset();
+        document.getElementById('elementsContainer').innerHTML = '';
+        elementCount = 0;
+        ajouterElement();
+
+      } catch (error) {
+        messageDiv.className = 'message error';
+        messageDiv.textContent = '❌ Erreur lors de l\'envoi : ' + error.message;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '📤 Envoyer les données';
+      }
+    });
+  </script>
+</body>
+</html>
