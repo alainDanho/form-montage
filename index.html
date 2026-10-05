@@ -26,6 +26,13 @@
       margin-bottom: 8px;
       text-align: center;
     }
+    h3 {
+      text-align: center;
+      color: #1a3a6b;
+      font-size: 1em;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
     .subtitle {
       text-align: center;
       color: #666;
@@ -160,7 +167,7 @@
 <body>
   <div class="container">
     <h1>🎬 GROUPE RTI</h1>
-    <h3>Direction de la production et de la Fiction</h3>
+    <h3>Direction de la Production et de la Fiction</h3>
     <h3>Service Montage et Planification</h3>
     <p class="subtitle">Formulaire de collecte des données de montage trimestriel</p>
 
@@ -175,11 +182,11 @@
         <div class="form-group">
           <label for="Trimestre">Trimestre *</label>
           <select id="Trimestre" name="Trimestre" required>
-    <option value="">-- Sélectionner --</option>
-    <option value="T1">T1 (Janvier - Mars)</option>
-    <option value="T2">T2 (Avril - Juin)</option>
-    <option value="T3" selected>T3 (Juillet - Septembre)</option>
-    <option value="T4">T4 (Octobre - Décembre)</option>
+            <option value="">-- Sélectionner --</option>
+            <option value="T1">T1 (Janvier - Mars)</option>
+            <option value="T2">T2 (Avril - Juin)</option>
+            <option value="T3" selected>T3 (Juillet - Septembre)</option>
+            <option value="T4">T4 (Octobre - Décembre)</option>
           </select>
         </div>
         <div class="form-group">
@@ -206,7 +213,7 @@
   </div>
 
   <script>
-    // ⚠️ REMPLACEZ PAR VOTRE URL D'APPLICATION WEB GOOGLE APPS SCRIPT
+    // ⚠️ URL DE VOTRE APPLICATION WEB GOOGLE APPS SCRIPT
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztR7Tj_Ox2NbMmEGLFQEq38TMTJdbl2eTGRoEu0cxVoHovGb0KwCy4-DmnGp6W9w/exec';
 
     let elementCount = 0;
@@ -281,8 +288,6 @@
       messageDiv.style.display = 'none';
 
       try {
-        // Construire les données à envoyer
-        // On envoie une ligne par élément monté
         const formData = new FormData(this);
         const nomMonteur = formData.get('Nom_du_monteur');
         const trimestre = formData.get('Trimestre');
@@ -295,7 +300,6 @@
         const types = formData.getAll('Type_element[]');
         const observations = formData.getAll('Observations[]');
 
-        // Envoyer chaque élément comme une ligne séparée
         const promises = titres.map((titre, index) => {
           const duree = `${heures[index] || 0}h ${minutes[index] || 0}min ${secondes[index] || 0}s`;
           
@@ -321,7 +325,6 @@
         messageDiv.className = 'message success';
         messageDiv.textContent = '✅ Données envoyées avec succès ! Elles ont été enregistrées dans le Google Sheet.';
         
-        // Réinitialiser le formulaire
         this.reset();
         document.getElementById('elementsContainer').innerHTML = '';
         elementCount = 0;
